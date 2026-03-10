@@ -161,7 +161,7 @@
                     <button onClick={onBack}>Back</button>
                     <h1>Free Limit Hit</h1>
                     <p>Get unlimited access for $9/mo</p>
-                    <button onClick={() => { posthog.capture('payment_clicked'); window.location.href = 'https://buy.stripe.com/placeholder-youtube-title-ideas'; }}>Buy Now</button>
+                    <button onClick={() => { posthog.capture('payment_clicked'); window.location.href = 'https://buy.stripe.com/test_5kQ14g134fR4c6a7kDg7e0i'; }}>Buy Now</button>
                     <p>Or get 3 more free uses:</p>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
                     <button onClick={handleEmailCapture}>Get Free Uses</button>
