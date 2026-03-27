@@ -1,228 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vid Title Pro — Boost Views!</title>
-<meta name="description" content="Boost Views!. Free to start, no account needed. Powered by AI.">
-<meta property="og:title" content="Vid Title Pro">
-<meta property="og:description" content="Boost Views!">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<script>
-  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-  posthog.init('phc_pg2BYO7sa22tvbyefuV1eFpatr5P2SOt45BrjuQQv9l',{api_host:'https://app.posthog.com'});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --purple: #7c3aed; --purple-light: #a78bfa; --dark: #0f172a;
-    --card: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --green: #10b981;
-  }
-  body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(15,23,42,.96); backdrop-filter: blur(12px); z-index: 100; }
-  .logo { font-weight: 700; font-size: 18px; color: var(--purple-light); }
-  .hero { max-width: 760px; margin: 64px auto 0; padding: 0 24px; text-align: center; }
-  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
-  .sub { font-size: 18px; color: var(--muted); margin-bottom: 36px; line-height: 1.6; }
-  .tool-box { max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
-  textarea, input[type=text] { width: 100%; padding: 14px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; font-family: inherit; outline: none; resize: vertical; transition: border-color .2s; }
-  textarea:focus, input[type=text]:focus { border-color: var(--purple-light); }
-  .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .15s, transform .1s; margin-top: 12px; }
-  .btn:hover { opacity: .9; }
-  .btn:active { transform: scale(.98); }
-  .btn-primary { background: linear-gradient(135deg, var(--purple), #4f46e5); color: #fff; }
-  .btn-secondary { background: var(--card); color: var(--muted); border: 1px solid var(--border); font-size: 14px; padding: 11px; }
-  .output-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-top: 20px; min-height: 120px; font-size: 15px; line-height: 1.7; white-space: pre-wrap; }
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 760px; margin: 48px auto; padding: 0 24px; }
-  .feature { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
-  .feature-emoji { font-size: 24px; margin-bottom: 8px; }
-  .feature-title { font-weight: 600; margin-bottom: 6px; }
-  .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-  .paywall { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 200; align-items: center; justify-content: center; }
-  .paywall.open { display: flex; }
-  .paywall-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px; max-width: 440px; width: 90%; text-align: center; }
-  .paywall-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-  .paywall-card p { color: var(--muted); margin-bottom: 24px; font-size: 15px; }
-  .pay-btn { display: block; background: linear-gradient(135deg, var(--purple), #4f46e5); color: #fff; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-decoration: none; margin-bottom: 10px; transition: opacity .15s; }
-  .pay-btn:hover { opacity: .9; }
-  .pay-secondary { font-size: 13px; color: var(--muted); text-decoration: underline; cursor: pointer; }
-  .uses-badge { display: inline-block; background: rgba(124,58,237,.15); color: var(--purple-light); padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
-  .loading { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .copy-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 12px; float: right; }
-  .copy-btn:hover { border-color: var(--purple-light); color: var(--purple-light); }
-  .attr { text-align: center; color: var(--border); font-size: 12px; padding: 24px; }
-  .attr a { color: var(--muted); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vid Title Pro — Boost Views!</title>
+    <meta name="description" content="Boost Views!. Free to try, no account required.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface2: #334155;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --accent: #10b981;
+            --border: #334155;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 18px; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .uses-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            background: rgba(99,102,241,.2);
+            border: 1px solid rgba(99,102,241,.4);
+            border-radius: 100px;
+            color: #a5b4fc;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            padding: 56px 24px 40px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #f1f5f9, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        @media (max-width: 600px) { .hero h1 { font-size: 28px; } }
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .trust-signal {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ── Tool ── */
+        .tool-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+        .tool-card {
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 32px;
+        }
+        .input-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 14px 16px;
+            resize: vertical;
+            outline: none;
+            transition: border-color .15s;
+        }
+        textarea:focus { border-color: var(--primary); }
+        textarea::placeholder { color: var(--muted); }
+
+        #generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 16px;
+            transition: background .15s, transform .1s;
+        }
+        #generate-btn:hover:not(:disabled) { background: var(--primary-dark); }
+        #generate-btn:active:not(:disabled) { transform: scale(0.98); }
+        #generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* ── Output ── */
+        .output-card {
+            margin-top: 24px;
+            background: var(--bg);
+            border: 1.5px solid var(--accent);
+            border-radius: 12px;
+            padding: 24px;
+            display: none;
+        }
+        .output-card.visible { display: block; }
+        .output-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+        .output-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+        .copy-btn {
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: border-color .15s, color .15s;
+        }
+        .copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ── Paywall ── */
+        #paywall {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,.95);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #paywall.visible { display: flex; }
+        .paywall-card {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        .paywall-card h2 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+        .paywall-card p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
+        .price-big { font-size: 48px; font-weight: 800; color: var(--primary); line-height: 1; }
+        .price-period { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+        .paywall-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: background .15s;
+        }
+        .paywall-cta:hover { background: var(--primary-dark); }
+        .paywall-or { color: var(--muted); font-size: 13px; margin: 12px 0; }
+        .email-row { display: flex; gap: 8px; }
+        .email-input {
+            flex: 1;
+            padding: 12px 14px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+        .email-input:focus { border-color: var(--primary); }
+        .email-btn {
+            padding: 12px 16px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: background .15s;
+        }
+        .email-btn:hover { background: var(--primary); border-color: var(--primary); }
+        .guarantee-text { font-size: 12px; color: var(--muted); margin-top: 16px; }
+
+        /* ── Error ── */
+        #error-msg { color: #f87171; font-size: 13px; margin-top: 10px; min-height: 18px; }
+    </style>
 </head>
 <body>
 
-<nav>
-  <span class="logo">Vid Title Pro</span>
-  <a href="#try" style="background:var(--purple);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;">Try Free →</a>
-</nav>
+<header>
+    <a class="logo" href="/">Vid Title Pro</a>
+    <div class="uses-badge" id="uses-badge">2 free uses left</div>
+</header>
 
+<!-- Hero -->
 <div class="hero">
-  <h1>Boost Views!</h1>
-  <p class="sub">Built for independent YouTuber creating content regularly. Free to start — 3 uses, no account needed.</p>
-  <div id="uses-badge" class="uses-badge">3 free uses remaining</div>
+    <h1>Vid Title Pro</h1>
+    <p>Boost Views!</p>
+    <div class="trust-signal">✓ Free to try &nbsp;·&nbsp; No account required &nbsp;·&nbsp; Works in seconds</div>
 </div>
 
-<div class="features">
-  <div class="feature">
-    <div class="feature-emoji">📈</div>
-    <div class="feature-title">**Auto-Optimized Titles**</div>
-    <div class="feature-desc">Generates attention-grabbing, SEO-friendly titles based on keywords, hashtags, and video content.</div>
-  </div>
-  <div class="feature">
-    <div class="feature-emoji">🔍</div>
-    <div class="feature-title">**Advanced Analytics**</div>
-    <div class="feature-desc">Tracks video performance, providing insights on viewership, engagement, and click-through rates to optimize titles for better results.</div>
-  </div>
-  <div class="feature">
-    <div class="feature-emoji">💡</div>
-    <div class="feature-title">**Title A/B Testing**</div>
-    <div class="feature-desc">Allows users to create and compare multiple title variations, helping to determine which title performs best and increases the chances of boosting views.</div>
-  </div>
-</div>
+<!-- Tool -->
+<div class="tool-wrap">
+    <div class="tool-card">
+        <p class="input-label">Describe what you need</p>
+        <textarea id="user-input" placeholder="Enter your text here..." rows="8"></textarea>
+        <div id="error-msg"></div>
+        <button id="generate-btn">Generate →</button>
 
-<div class="tool-box" id="try">
-  <textarea id="user-input" rows="5" placeholder=""Exploring the Best Hiking Trails in Japan: A 5-Day Adventure to Discover Hidden Gems and Unforgettable Landscapes.""></textarea>
-  <button class="btn btn-primary" id="generate-btn" onclick="generate()">
-    Generate with AI →
-  </button>
-  <div class="output-box" id="output" style="display:none;">
-    <button class="copy-btn" onclick="copyOutput()">Copy</button>
-    <span id="output-text"></span>
-    <div class="attr">Generated by <a href="https://agent-os-seven.vercel.app" target="_blank">Vid Title Pro</a></div>
-  </div>
-</div>
-
-<div class="paywall" id="paywall">
-  <div class="paywall-card">
-    <h2>You've used your 3 free uses 🎉</h2>
-    <p>Clearly useful. Get unlimited access.</p>
-    <a href="https://buy.stripe.com/test_5kQ14g134fR4c6a7kDg7e0i" class="pay-btn" onclick="track('payment_clicked',{method:'stripe'})">
-      Get Unlimited — $19 one-time →
-    </a>
-    <div style="margin:12px 0;color:var(--border);font-size:12px;">── or ──</div>
-    <div id="email-capture">
-      <p style="font-size:13px;margin-bottom:10px;">Get 3 more free uses — enter your email:</p>
-      <div style="display:flex;gap:8px;">
-        <input type="text" id="email-input" placeholder="you@example.com" style="flex:1;padding:10px;font-size:14px;">
-        <button onclick="captureEmail()" style="background:var(--purple);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap;">Get 3 Free</button>
-      </div>
+        <div class="output-card" id="output-card">
+            <div class="output-label">✓ Result</div>
+            <div class="output-text" id="output-text"></div>
+            <button class="copy-btn" id="copy-btn">Copy to clipboard</button>
+        </div>
     </div>
-    <div id="email-success" style="display:none;color:var(--green);font-size:14px;margin-top:10px;">✓ 3 more free uses added!</div>
-  </div>
+</div>
+
+<!-- Paywall Overlay -->
+<div id="paywall">
+    <div class="paywall-card">
+        <div style="font-size:40px;margin-bottom:12px">🔒</div>
+        <h2>Free limit reached</h2>
+        <p>You've used your 2 free uses. Unlock unlimited access for just:</p>
+        <div class="price-big">$9</div>
+        <div class="price-period">/month · cancel anytime</div>
+        <a class="paywall-cta" href="https://buy.stripe.com/test_5kQ14g134fR4c6a7kDg7e0i" id="upgrade-cta" target="_blank">Upgrade Now →</a>
+        <div class="paywall-or">— or get 3 more free uses —</div>
+        <div class="email-row">
+            <input type="email" class="email-input" id="email-input" placeholder="your@email.com">
+            <button class="email-btn" id="email-btn">Get Free Uses</button>
+        </div>
+        <p class="guarantee-text">🛡 30-day money-back guarantee · Your data is never shared</p>
+    </div>
 </div>
 
 <script>
-const PRODUCT = 'Vid Title Pro';
-const PRODUCT_SLUG = 'youtube-title-ideas';
-const SYSTEM_PROMPT = "Develop a content recommendation algorithm that increases YouTube views by 20% within the next quarter.";
-const SUPABASE_URL = 'https://hprhgfhylkykkawszgba.supabase.co';
-const SUPABASE_ANON = 'sb_publishable_-nQFIe4lTMWbqi6U0mgWwQ_rcvssvD-';
-const FREE_LIMIT = 3;
-let useCount = parseInt(localStorage.getItem('uc_' + PRODUCT_SLUG) || '0');
-let extraUses = parseInt(localStorage.getItem('eu_' + PRODUCT_SLUG) || '0');
+const AI_PROXY = 'https://agent-os-seven.vercel.app/api/ai';
+const POSTHOG_KEY = 'phc_pg2BYO7sa22tvbyefuV1eFpatr5P2SOt45BrjuQQv9l';
+const FREE_LIMIT = 2;
+const SLUG = 'youtube-title-ideas';
+const SUPABASE_URL2 = 'https://hprhgfhylkykkawszgba.supabase.co';
+const SUPABASE_ANON_KEY2 = 'sb_publishable_-nQFIe4lTMWbqi6U0mgWwQ_rcvssvD-';
 
-function track(event, props = {}) {
-  if (window.posthog) posthog.capture(event, { product: PRODUCT, ...props });
-}
+// Safe PostHog init (never crashes the app)
+try {
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(POSTHOG_KEY, {api_host:'https://us.i.posthog.com', person_profiles:'identified_only'});
+} catch(e) { window.posthog = { capture: () => {}, identify: () => {} }; }
+
+// ── Free limit tracking ────────────────────────────────────────────────────
+const storageKey = 'uses_' + SLUG;
+let usesLeft = parseInt(localStorage.getItem(storageKey) ?? FREE_LIMIT, 10);
+if (isNaN(usesLeft) || usesLeft > FREE_LIMIT) usesLeft = FREE_LIMIT;
 
 function updateBadge() {
-  const remaining = Math.max(0, FREE_LIMIT + extraUses - useCount);
-  const badge = document.getElementById('uses-badge');
-  if (badge) badge.textContent = remaining + ' free use' + (remaining === 1 ? '' : 's') + ' remaining';
+    const badge = document.getElementById('uses-badge');
+    badge.textContent = usesLeft + ' free use' + (usesLeft !== 1 ? 's' : '') + ' left';
+    badge.style.background = usesLeft > 0 ? 'rgba(99,102,241,.2)' : 'rgba(239,68,68,.2)';
+    badge.style.borderColor = usesLeft > 0 ? 'rgba(99,102,241,.4)' : 'rgba(239,68,68,.4)';
+    badge.style.color = usesLeft > 0 ? '#a5b4fc' : '#f87171';
 }
-
-async function generate() {
-  const input = document.getElementById('user-input').value.trim();
-  if (!input) return;
-
-  if (useCount >= FREE_LIMIT + extraUses) {
-    track('paywall_shown');
-    document.getElementById('paywall').classList.add('open');
-    return;
-  }
-
-  const btn = document.getElementById('generate-btn');
-  btn.innerHTML = '<span class="loading"></span>Generating...';
-  btn.disabled = true;
-
-  try {
-    const r = await fetch('/api/groq', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: input }],
-        max_tokens: 800,
-        temperature: 0.8,
-      }),
-    });
-    const data = await r.json();
-    const text = data.choices?.[0]?.message?.content || 'Sorry, no output generated. Please try again.';
-    document.getElementById('output-text').textContent = text;
-    document.getElementById('output').style.display = 'block';
-
-    useCount++;
-    localStorage.setItem('uc_' + PRODUCT_SLUG, useCount);
-    updateBadge();
-    track('tool_used', { use_number: useCount });
-
-    if (useCount >= FREE_LIMIT + extraUses) {
-      setTimeout(() => {
-        track('free_limit_hit');
-        document.getElementById('paywall').classList.add('open');
-      }, 1500);
-    }
-  } catch (e) {
-    document.getElementById('output-text').textContent = 'Error: ' + e.message + '. Please try again.';
-    document.getElementById('output').style.display = 'block';
-  } finally {
-    btn.innerHTML = 'Generate Again →';
-    btn.disabled = false;
-  }
-}
-
-function copyOutput() {
-  const text = document.getElementById('output-text').textContent;
-  navigator.clipboard.writeText(text);
-  const btn = document.querySelector('.copy-btn');
-  btn.textContent = 'Copied!';
-  setTimeout(() => btn.textContent = 'Copy', 1500);
-}
-
-async function captureEmail() {
-  const email = document.getElementById('email-input').value.trim();
-  if (!email.includes('@')) return;
-  try {
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    await sb.from('leads').insert({ email, product: PRODUCT_SLUG, context: 'paywall_extra_uses', source: document.referrer || 'direct', created_at: new Date().toISOString() });
-  } catch(e) {}
-  extraUses += 3;
-  localStorage.setItem('eu_' + PRODUCT_SLUG, extraUses);
-  track('email_captured', { context: 'paywall_extra_uses' });
-  document.getElementById('email-capture').style.display = 'none';
-  document.getElementById('email-success').style.display = 'block';
-  document.getElementById('paywall').classList.remove('open');
-  updateBadge();
-}
-
-document.getElementById('paywall').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
-});
-
-document.getElementById('user-input').addEventListener('keydown', function(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generate();
-});
-
-track('tool_opened');
 updateBadge();
+
+// ── Groq API call via secure proxy ───────────────────────────────────────
+async function callGroq(userText) {
+    const systemPrompt = `You are an expert AI assistant. Help the user with their request. Be specific, practical, and immediately useful.`;
+
+    const res = await fetch(AI_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system: systemPrompt, user: userText })
+    });
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    return data.text || '';
+}
+
+// ── Main generate handler ──────────────────────────────────────────────────
+document.getElementById('generate-btn').addEventListener('click', async () => {
+    const input = document.getElementById('user-input').value.trim();
+    const errorEl = document.getElementById('error-msg');
+    errorEl.textContent = '';
+
+    if (!input) {
+        errorEl.textContent = 'Please enter some text first.';
+        return;
+    }
+
+    // Check free limit
+    if (usesLeft <= 0) {
+        document.getElementById('paywall').classList.add('visible');
+        posthog.capture('free_limit_hit', { product: SLUG });
+        return;
+    }
+
+    const btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+    posthog.capture('tool_used', { product: SLUG });
+
+    try {
+        const result = await callGroq(input);
+        document.getElementById('output-text').textContent = result;
+        document.getElementById('output-card').classList.add('visible');
+
+        // Decrement free limit
+        usesLeft = Math.max(0, usesLeft - 1);
+        localStorage.setItem(storageKey, usesLeft);
+        updateBadge();
+
+        posthog.capture('tool_success', { product: SLUG });
+
+        // Show paywall after last free use
+        if (usesLeft <= 0) {
+            setTimeout(() => {
+                document.getElementById('paywall').classList.add('visible');
+                posthog.capture('paywall_shown', { product: SLUG });
+            }, 1500);
+        }
+    } catch (err) {
+        errorEl.textContent = 'Something went wrong: ' + err.message + '. Please try again.';
+        posthog.capture('tool_error', { product: SLUG, error: err.message });
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate →';
+    }
+});
+
+// ── Copy button ────────────────────────────────────────────────────────────
+document.getElementById('copy-btn').addEventListener('click', () => {
+    const text = document.getElementById('output-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => { btn.textContent = 'Copy to clipboard'; }, 2000);
+    });
+});
+
+// ── Email capture ──────────────────────────────────────────────────────────
+document.getElementById('email-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email-input').value.trim();
+    if (!email || !email.includes('@')) {
+        document.getElementById('email-input').focus();
+        return;
+    }
+
+    // Save lead to Supabase
+    if (SUPABASE_URL2 && SUPABASE_ANON_KEY2) {
+        fetch(SUPABASE_URL2 + '/rest/v1/leads', {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY2,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ email, product: SLUG, source: 'paywall_email_capture' })
+        }).catch(() => {});
+    }
+
+    posthog.capture('email_captured', { product: SLUG, email });
+    posthog.identify(email, { email, product: SLUG });
+
+    // Grant 3 more free uses
+    usesLeft = 3;
+    localStorage.setItem(storageKey, 3);
+    updateBadge();
+
+    document.getElementById('paywall').classList.remove('visible');
+    document.getElementById('email-input').value = '';
+});
+
+// ── Upgrade CTA tracking ───────────────────────────────────────────────────
+document.getElementById('upgrade-cta')?.addEventListener('click', () => {
+    posthog.capture('payment_clicked', { product: SLUG });
+});
+
+posthog.capture('tool_opened', { product: SLUG });
 </script>
 </body>
 </html>
